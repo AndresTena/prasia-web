@@ -18,8 +18,8 @@
   --dark-3:   #0F0E0C;
 
   /* Accent */
-  --gold:     #D4AF37;
-  --gold-2:   #E5C44B;
+  --gold:     #D4B896;
+  --gold-2:   #DFC8A8;
 
   /* Texto */
   --text:     #1A1916;
@@ -188,7 +188,7 @@ em  { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-
   letter-spacing: -0.04em;
   color: var(--text);
 }
-.logo-p { color: var(--gold); }
+.logo-ia { color: var(--gold); }
 
 .nav-links {
   display: flex;
