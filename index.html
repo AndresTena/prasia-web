@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Prasia — Automatizaciones con IA para pymes. Análisis de negocio en 24h.">
+  <title>Prasia — Menos tareas. Más negocio.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo"><span class="logo-p">P</span>rasia</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+        <li><a href="#casos">Casos reales</a></li>
+        <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#contacto" class="nav-cta">Hablar con Prasia</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO — cream, 2 columnas ===================== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+
+        <div class="hero-left">
+          <h1 class="hero-heading">
+            Menos tareas.<br>
+            <em>Más negocio.</em>
+          </h1>
+          <div class="hero-actions">
+            <a href="#quiz" class="btn-primary">Quiero mi análisis gratuito</a>
+            <a href="#proceso" class="btn-text-link">Ver cómo trabajamos &thinsp;→</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Automatización con IA · Sevilla · España
+          </div>
+          <p class="hero-desc">
+            Automatizamos cualquier proceso para que las pequeñas empresas sean mucho más eficientes —
+            liberando tiempo y multiplicando resultados.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DARK CARD — manifesto ===================== -->
+  <section class="dark-card-section" id="darkCardSection">
+    <div class="dark-card" id="darkCardEl">
+      <div class="dc-body">
+        <span class="dc-label">Nuestra promesa</span>
+        <h2 class="dc-heading">
+          No vendemos<br>software.<br>
+          <em>Automatizamos<br>tu negocio.</em>
+        </h2>
+        <p class="dc-sub">Mientras tu equipo trabaja, nosotros montamos el sistema que lo libera.</p>
+        <a href="#contacto" class="dc-cta">Empieza hoy &thinsp;→</a>
+      </div>
+      <div class="dc-pattern" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ===================== STATS ===================== -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-row">
+        <div class="stat reveal-up">
+          <div class="stat-val" data-target="24" data-suffix="h">0h</div>
+          <div class="stat-lbl">Análisis inicial</div>
+        </div>
+        <div class="stat-div" aria-hidden="true"></div>
+        <div class="stat reveal-up" style="--delay:.1s">
+          <div class="stat-val" data-target="6" data-prefix="+">+0</div>
+          <div class="stat-lbl">Servicios especializados</div>
+        </div>
+        <div class="stat-div" aria-hidden="true"></div>
+        <div class="stat reveal-up" style="--delay:.2s">
+          <div class="stat-val" data-target="100" data-suffix="%">0%</div>
+          <div class="stat-lbl">A medida, sin genéricos</div>
+        </div>
+        <div class="stat-div" aria-hidden="true"></div>
+        <div class="stat reveal-up" style="--delay:.3s">
+          <div class="stat-val">∞</div>
+          <div class="stat-lbl">Fricciones eliminadas</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PALABRAS DE MARCA ===================== -->
+  <section class="brand-section">
+    <div class="container">
+      <p class="section-label reveal-up">Nuestra filosofía</p>
+      <div class="brand-grid">
+        <div class="brand-item reveal-up">
+          <span class="brand-num">01</span>
+          <h3 class="brand-word">Disciplina</h3>
+          <p>Cada automatización se construye con procesos rigurosos. Sin atajos, sin improvisación.</p>
+        </div>
+        <div class="brand-item reveal-up" style="--delay:.08s">
+          <span class="brand-num">02</span>
+          <h3 class="brand-word">Profesionalidad</h3>
+          <p>Tratamos tu negocio como si fuera el nuestro. Cada detalle importa, cada plazo se cumple.</p>
+        </div>
+        <div class="brand-item reveal-up" style="--delay:.16s">
+          <span class="brand-num">03</span>
+          <h3 class="brand-word">Pasión</h3>
+          <p>Amamos la tecnología y lo que hace por los negocios. Ese entusiasmo se nota en cada proyecto.</p>
+        </div>
+        <div class="brand-item reveal-up" style="--delay:.24s">
+          <span class="brand-num">04</span>
+          <h3 class="brand-word">Eficiencia</h3>
+          <p>Más resultados, menos esfuerzo. Optimizamos todo lo que se pueda optimizar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ — dark section ===================== -->
+  <section id="quiz" class="quiz-section">
+    <div class="container">
+      <div class="quiz-header">
+        <p class="section-label light-label reveal-up">Diagnóstico gratuito</p>
+        <h2 class="section-heading white reveal-up">¿Cuánto está perdiendo<br>tu negocio?</h2>
+        <p class="section-sub white reveal-up">5 preguntas · Resultado inmediato · Sin compromiso</p>
+      </div>
+      <div class="quiz-wrapper" id="quizWrapper"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICIOS ===================== -->
+  <section id="servicios" class="services-section">
+    <div class="container">
+      <div class="services-head">
+        <p class="section-label reveal-up">Lo que hacemos</p>
+        <h2 class="section-heading reveal-up">Servicios diseñados<br>para pymes reales</h2>
+      </div>
+      <div class="services-list">
+
+        <a href="#contacto" class="service-row featured reveal-up">
+          <span class="sr-num">01</span>
+          <span class="sr-name">Análisis de negocio con IA</span>
+          <span class="sr-badge">Servicio estrella</span>
+          <span class="sr-desc">Sube tus datos y recibe insights accionables en menos de 24 horas.</span>
+          <span class="sr-arrow">→</span>
+        </a>
+
+        <div class="service-row reveal-up" style="--delay:.06s">
+          <span class="sr-num">02</span>
+          <span class="sr-name">Automatizaciones con n8n</span>
+          <span class="sr-desc">Conectamos tus herramientas para que trabajen solas mientras tú te centras en lo que importa.</span>
+          <span class="sr-arrow">→</span>
+        </div>
+
+        <div class="service-row reveal-up" style="--delay:.12s">
+          <span class="sr-num">03</span>
+          <span class="sr-name">Chatbot inteligente</span>
+          <span class="sr-desc">Atención al cliente 24/7 entrenado con el conocimiento real de tu negocio.</span>
+          <span class="sr-arrow">→</span>
+        </div>
+
+        <div class="service-row reveal-up" style="--delay:.18s">
+          <span class="sr-num">04</span>
+          <span class="sr-name">Dashboard financiero con IA</span>
+          <span class="sr-desc">Tus números en tiempo real, con alertas automáticas y predicciones basadas en tu historial.</span>
+          <span class="sr-arrow">→</span>
+        </div>
+
+        <div class="service-row reveal-up" style="--delay:.24s">
+          <span class="sr-num">05</span>
+          <span class="sr-name">Prospección de clientes</span>
+          <span class="sr-desc">Encuentra y contacta clientes potenciales de forma automatizada. Más reuniones, menos llamadas en frío.</span>
+          <span class="sr-arrow">→</span>
+        </div>
+
+        <div class="service-row reveal-up" style="--delay:.3s">
+          <span class="sr-num">06</span>
+          <span class="sr-name">Campus virtual</span>
+          <span class="sr-desc">Forma a tu equipo o vende cursos online. Tu conocimiento, escalado sin esfuerzo adicional.</span>
+          <span class="sr-arrow">→</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CASOS REALES ===================== -->
+  <section id="casos" class="cases-section">
+    <div class="container">
+      <div class="cases-head">
+        <p class="section-label reveal-up">Portfolio</p>
+        <h2 class="section-heading reveal-up">Lo que sabemos<br>construir</h2>
+        <p class="section-sub reveal-up">Demos reales, no mockups. Cada proyecto resuelve un problema concreto de negocio.</p>
+      </div>
+      <div class="cases-grid">
+
+        <div class="case-card reveal-up">
+          <a href="https://academiadelphos.es" target="_blank" rel="noopener" class="case-visual cv-1">
+            <div class="cv-inner">
+              <p class="cv-name">DelphosWeb</p>
+              <p class="cv-url">academiadelphos.es</p>
+            </div>
+            <div class="cv-hover"><span>Ver demo &nbsp;↗</span></div>
+          </a>
+          <div class="case-body">
+            <h3>DelphosWeb</h3>
+            <p>Web corporativa de academia con quiz interactivo, chatbot IA y canvas de partículas.</p>
+            <div class="case-tags">
+              <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Canvas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-card reveal-up" style="--delay:.15s">
+          <a href="https://tenastudio.tech" target="_blank" rel="noopener" class="case-visual cv-2">
+            <div class="cv-inner">
+              <p class="cv-name">FinTrack</p>
+              <p class="cv-url">tenastudio.tech</p>
+            </div>
+            <div class="cv-hover"><span>Ver demo &nbsp;↗</span></div>
+          </a>
+          <div class="case-body">
+            <h3>FinTrack</h3>
+            <p>App que parsea extractos bancarios CSV/Excel y genera un dashboard financiero con IA.</p>
+            <div class="case-tags">
+              <span>Next.js</span><span>IA</span><span>Recharts</span><span>CSV/Excel</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-card reveal-up" style="--delay:.3s">
+          <a href="https://leads.tenastudio.tech" target="_blank" rel="noopener" class="case-visual cv-3">
+            <div class="cv-inner">
+              <p class="cv-name">Prasia Leads</p>
+              <p class="cv-url">leads.tenastudio.tech</p>
+            </div>
+            <div class="cv-hover"><span>Ver demo &nbsp;↗</span></div>
+          </a>
+          <div class="case-body">
+            <h3>Prasia Leads</h3>
+            <p>SaaS de prospección B2B que busca pymes, las analiza con IA y genera emails personalizados.</p>
+            <div class="case-tags">
+              <span>Next.js</span><span>SQLite</span><span>IA</span><span>B2B</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROCESO ===================== -->
+  <section id="proceso" class="process-section">
+    <div class="container">
+      <p class="section-label reveal-up">El proceso</p>
+      <h2 class="section-heading reveal-up">Simple por diseño,<br>potente por dentro</h2>
+      <div class="process-steps">
+        <div class="process-step reveal-up">
+          <div class="ps-num">01</div>
+          <h3>Analizamos tu negocio</h3>
+          <p>Auditoría completa en 24 horas. Identificamos qué procesos lastrando tu tiempo y dónde está el mayor potencial de mejora.</p>
+        </div>
+        <div class="process-step reveal-up" style="--delay:.18s">
+          <div class="ps-num">02</div>
+          <h3>Diseñamos la automatización</h3>
+          <p>A medida, sin soluciones genéricas. Cada pieza se diseña para tu negocio, tu equipo y tus herramientas actuales.</p>
+        </div>
+        <div class="process-step reveal-up" style="--delay:.36s">
+          <div class="ps-num">03</div>
+          <h3>Implementamos y acompañamos</h3>
+          <p>Tú sigues trabajando mientras nosotros lo montamos. Una vez en marcha, te acompañamos para que todo funcione perfectamente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA FINAL — dark ===================== -->
+  <section id="contacto" class="cta-section">
+    <div class="cta-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="cta-layout">
+        <div class="cta-left">
+          <p class="section-label light-label reveal-up">Empieza ahora</p>
+          <h2 class="section-heading white reveal-up">Empieza hoy.<br><em>Resultados en 24h.</em></h2>
+          <p class="section-sub white reveal-up">Cuéntanos tu negocio. En menos de 24 horas tienes un análisis real sobre qué podemos automatizar y cuánto tiempo puedes recuperar.</p>
+          <ul class="cta-checks reveal-up">
+            <li>Sin compromiso</li>
+            <li>Análisis en 24h</li>
+            <li>100% a medida</li>
+          </ul>
+        </div>
+        <div class="cta-right reveal-up" style="--delay:.18s">
+          <form id="contactForm" class="contact-form" novalidate>
+            <div class="form-row">
+              <div class="fg">
+                <label for="fname">Nombre</label>
+                <input type="text" id="fname" name="name" placeholder="Tu nombre" required>
+              </div>
+              <div class="fg">
+                <label for="femail">Email</label>
+                <input type="email" id="femail" name="email" placeholder="tu@email.com" required>
+              </div>
+            </div>
+            <div class="fg">
+              <label for="fsector">Sector</label>
+              <select id="fsector" name="sector">
+                <option value="">¿En qué sector estás?</option>
+                <option value="restauracion">Restauración / Hostelería</option>
+                <option value="clinica">Clínica / Salud</option>
+                <option value="asesoria">Asesoría / Consultoría</option>
+                <option value="academia">Academia / Formación</option>
+                <option value="inmobiliaria">Inmobiliaria</option>
+                <option value="comercio">Comercio / Retail</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="fmsg">¿Qué quieres automatizar? <span class="opt">(opcional)</span></label>
+              <textarea id="fmsg" name="message" rows="3" placeholder="Cuéntanos brevemente qué procesos te gustaría automatizar..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary btn-full">
+              <span id="btnText">Quiero mi análisis en 24h</span>
+              <span id="btnSpinner" class="spinner hidden"></span>
+            </button>
+          </form>
+          <div id="formSuccess" class="form-success hidden">
+            <div class="success-mark">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <h3>¡Recibido!</h3>
+            <p>Te contactamos en menos de 24 horas con tu análisis personalizado.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo"><span class="logo-p">P</span>rasia</a>
+          <p>Automatizamos cualquier proceso para que las pequeñas empresas sean mucho más eficientes.</p>
+          <a href="mailto:andres@prasia.es" class="footer-email">andres@prasia.es</a>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+          <div class="footer-col">
+            <h4>Servicios</h4>
+            <a href="#servicios">Análisis con IA</a>
+            <a href="#servicios">Automatizaciones n8n</a>
+            <a href="#servicios">Chatbots</a>
+            <a href="#servicios">Dashboards</a>
+          </div>
+          <div class="footer-col">
+            <h4>Empresa</h4>
+            <a href="#quiz">Quiz diagnóstico</a>
+            <a href="#casos">Casos reales</a>
+            <a href="#proceso">Cómo trabajamos</a>
+            <a href="#contacto">Contacto</a>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <a href="legal.html">Aviso legal</a>
+            <a href="privacidad.html">Política de privacidad</a>
+          </div>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Prasia. Todos los derechos reservados.</p>
+        <p>Hecho con pasión en Sevilla.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
