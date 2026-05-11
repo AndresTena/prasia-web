@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(gh repo:*)",
+      "Bash(scp -i ~/.ssh/boteli_key:*)",
+      "Bash(ssh -i ~/.ssh/boteli_key:*)"
+    ]
+  }
+}
