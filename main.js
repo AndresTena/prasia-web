@@ -42,8 +42,8 @@
 
   const RADIUS_MAX = 20;
   const PAD_V_END  = 30;
-  // Animation completes after scrolling half the hero height — fewer scrolls needed
-  const scrollEnd  = section.offsetTop * 0.5;
+  // Animation completes after scrolling ~75% of the hero height
+  const scrollEnd  = section.offsetTop * 0.75;
 
   function easeOut(t) {
     return 1 - Math.pow(1 - t, 3);
