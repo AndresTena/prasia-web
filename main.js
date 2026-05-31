@@ -43,7 +43,7 @@
   const RADIUS_MAX = 20;
   const PAD_V_END  = 30;
   const scrollEnd = section.offsetTop * 1.2;
-  const LERP      = 0.07; // smoothing — smaller = más progresivo/lento
+  const LERP      = 0.05; // smoothing — smaller = más progresivo/lento
 
   // easeIn start + easeOutBack finish (slight bounce at the end)
   function easeInOutBack(t) {
