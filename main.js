@@ -41,51 +41,12 @@
   if (!section || !card) return;
 
   const RADIUS_MAX = 20;
-  const PAD_V_END  = 30;  // vertical padding added once on first scroll — tune this
-  const STIFFNESS  = 0.06;
-  const DAMPING    = 0.90;
+  const PAD_V_END  = 30;
+  // Animation completes after scrolling half the hero height — fewer scrolls needed
+  const scrollEnd  = section.offsetTop * 0.5;
 
-  const scrollEnd = section.offsetTop;
-
-  let currentP = 0, velP = 0, targetP = 0, rafId = null;
-
-  function applyP(p) {
-    const vw = window.innerWidth;
-    const padStart = Math.max(40, (vw - 1160) / 2);
-    const pC  = Math.max(0, Math.min(1, p));
-    const pad = padStart * (1 - pC);
-
-    section.style.paddingLeft  = pad + 'px';
-    section.style.paddingRight = pad + 'px';
-    card.style.borderRadius    = `${RADIUS_MAX * (1 - pC)}px`;
-    if (dcBody) dcBody.style.paddingLeft = (72 + (padStart - pad)) + 'px';
-
-    const over    = p - pC;
-    const extraPx = Math.abs(over) * padStart;
-    if (over > 0) {
-      card.style.marginLeft  = `-${extraPx}px`;
-      card.style.marginRight = `-${extraPx}px`;
-    } else if (over < 0) {
-      card.style.marginLeft  = `${extraPx}px`;
-      card.style.marginRight = `${extraPx}px`;
-    } else {
-      card.style.marginLeft = card.style.marginRight = '';
-    }
-  }
-
-  function springTick() {
-    velP = (velP + (targetP - currentP) * STIFFNESS) * DAMPING;
-    currentP += velP;
-
-    applyP(currentP);
-
-    if (Math.abs(velP) > 0.0003 || Math.abs(targetP - currentP) > 0.0003) {
-      rafId = requestAnimationFrame(springTick);
-    } else {
-      currentP = targetP;
-      applyP(currentP);
-      rafId = null;
-    }
+  function easeOut(t) {
+    return 1 - Math.pow(1 - t, 3);
   }
 
   function update() {
@@ -93,12 +54,18 @@
       section.style.paddingLeft = section.style.paddingRight = '';
       card.style.borderRadius = card.style.marginLeft = card.style.marginRight = '';
       if (dcBody) dcBody.style.paddingLeft = '';
-      currentP = velP = targetP = 0;
       return;
     }
-    const raw = window.scrollY / scrollEnd;
-    targetP = Math.max(0, Math.min(1, raw));
-    if (!rafId) rafId = requestAnimationFrame(springTick);
+    const vw = window.innerWidth;
+    const padStart = Math.max(40, (vw - 1160) / 2);
+    const p   = easeOut(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
+    const pad = padStart * (1 - p);
+
+    section.style.paddingLeft  = pad + 'px';
+    section.style.paddingRight = pad + 'px';
+    card.style.borderRadius    = `${RADIUS_MAX * (1 - p)}px`;
+    card.style.marginLeft = card.style.marginRight = '';
+    if (dcBody) dcBody.style.paddingLeft = (72 + (padStart - pad)) + 'px';
   }
 
   // Vertical growth: expands on first scroll down, collapses back at scrollY=0
@@ -125,7 +92,7 @@
   window.addEventListener('scroll', updateVertical, { passive: true });
 
   window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', () => { velP = 0; currentP = targetP; update(); });
+  window.addEventListener('resize', update);
   update();
 })();
 
