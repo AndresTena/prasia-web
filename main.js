@@ -42,29 +42,22 @@
 
   const RADIUS_MAX = 20;
   const PAD_V_END  = 30;
-  // Intermediate scroll distance: ~1.2× the hero height
-  const scrollEnd  = section.offsetTop * 1.2;
+  const scrollEnd = section.offsetTop * 1.2;
+  const LERP      = 0.07; // smoothing — smaller = más progresivo/lento
 
-  // easeIn start (slow build) + easeOutBack finish (slight overshoot/bounce)
+  // easeIn start + easeOutBack finish (slight bounce at the end)
   function easeInOutBack(t) {
     const s = 1.15;
-    if (t < 0.5) {
-      return 2 * t * t;
-    }
+    if (t < 0.5) return 2 * t * t;
     const u = 2 * t - 1;
     return 0.5 + (1 + (s + 1) * Math.pow(u - 1, 3) + s * Math.pow(u - 1, 2)) * 0.5;
   }
 
-  function update() {
-    if (window.innerWidth <= 768) {
-      section.style.paddingLeft = section.style.paddingRight = '';
-      card.style.borderRadius = card.style.marginLeft = card.style.marginRight = '';
-      if (dcBody) dcBody.style.paddingLeft = '';
-      return;
-    }
+  let currentP = 0, targetP = 0, rafId = null;
+
+  function applyP(p) {
     const vw = window.innerWidth;
     const padStart = Math.max(40, (vw - 1160) / 2);
-    const p   = easeInOutBack(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
     const pC  = Math.max(0, Math.min(1, p));
     const pad = padStart * (1 - pC);
 
@@ -73,7 +66,6 @@
     card.style.borderRadius    = `${RADIUS_MAX * (1 - pC)}px`;
     if (dcBody) dcBody.style.paddingLeft = (72 + (padStart - pad)) + 'px';
 
-    // Render overshoot: card sticks out slightly beyond viewport during bounce
     const over = p - pC;
     if (over > 0) {
       const extra = over * padStart;
@@ -82,6 +74,30 @@
     } else {
       card.style.marginLeft = card.style.marginRight = '';
     }
+  }
+
+  function tick() {
+    currentP += (targetP - currentP) * LERP;
+    applyP(currentP);
+    if (Math.abs(targetP - currentP) > 0.0005) {
+      rafId = requestAnimationFrame(tick);
+    } else {
+      currentP = targetP;
+      applyP(currentP);
+      rafId = null;
+    }
+  }
+
+  function update() {
+    if (window.innerWidth <= 768) {
+      section.style.paddingLeft = section.style.paddingRight = '';
+      card.style.borderRadius = card.style.marginLeft = card.style.marginRight = '';
+      if (dcBody) dcBody.style.paddingLeft = '';
+      currentP = targetP = 0;
+      return;
+    }
+    targetP = easeInOutBack(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
+    if (!rafId) rafId = requestAnimationFrame(tick);
   }
 
   // Vertical growth: expands on first scroll down, collapses back at scrollY=0
