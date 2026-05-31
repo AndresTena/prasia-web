@@ -42,12 +42,17 @@
 
   const RADIUS_MAX = 20;
   const PAD_V_END  = 30;
-  // Card fully expands after scrolling ~2× the hero height — needs more scrolling
-  const scrollEnd  = section.offsetTop * 2;
+  // Intermediate scroll distance: ~1.2× the hero height
+  const scrollEnd  = section.offsetTop * 1.2;
 
-  // easeInOut: starts slow, builds progressively, ends smooth — no bounce
-  function easeInOut(t) {
-    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  // easeIn start (slow build) + easeOutBack finish (slight overshoot/bounce)
+  function easeInOutBack(t) {
+    const s = 1.15;
+    if (t < 0.5) {
+      return 2 * t * t;
+    }
+    const u = 2 * t - 1;
+    return 0.5 + (1 + (s + 1) * Math.pow(u - 1, 3) + s * Math.pow(u - 1, 2)) * 0.5;
   }
 
   function update() {
@@ -59,14 +64,24 @@
     }
     const vw = window.innerWidth;
     const padStart = Math.max(40, (vw - 1160) / 2);
-    const p   = easeInOut(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
-    const pad = padStart * (1 - p);
+    const p   = easeInOutBack(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
+    const pC  = Math.max(0, Math.min(1, p));
+    const pad = padStart * (1 - pC);
 
     section.style.paddingLeft  = pad + 'px';
     section.style.paddingRight = pad + 'px';
-    card.style.borderRadius    = `${RADIUS_MAX * (1 - p)}px`;
-    card.style.marginLeft = card.style.marginRight = '';
+    card.style.borderRadius    = `${RADIUS_MAX * (1 - pC)}px`;
     if (dcBody) dcBody.style.paddingLeft = (72 + (padStart - pad)) + 'px';
+
+    // Render overshoot: card sticks out slightly beyond viewport during bounce
+    const over = p - pC;
+    if (over > 0) {
+      const extra = over * padStart;
+      card.style.marginLeft  = `-${extra}px`;
+      card.style.marginRight = `-${extra}px`;
+    } else {
+      card.style.marginLeft = card.style.marginRight = '';
+    }
   }
 
   // Vertical growth: expands on first scroll down, collapses back at scrollY=0
