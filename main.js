@@ -42,8 +42,7 @@
 
   const RADIUS_MAX = 20;
   const PAD_V_END  = 30;
-  // Animation completes before the card reaches the viewport top
-  const scrollEnd   = section.offsetTop * 0.9;
+  const scrollEnd   = section.offsetTop * 1.4;
   const LERP        = 0.05;
 
   // Slow start, slight bounce near the end (like before)
@@ -98,9 +97,10 @@
       currentP = targetP = 0;
       return;
     }
-    // Once dark card reaches viewport top: snap to fully expanded, kill lerp
+    // Once dark card reaches viewport top: unconditional snap to p=1, kill lerp
     if (window.scrollY >= section.offsetTop) {
-      if (currentP < 1) { currentP = targetP = 1; applyP(1); }
+      currentP = targetP = 1;
+      applyP(1);
       if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       return;
     }
