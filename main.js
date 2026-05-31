@@ -42,11 +42,13 @@
 
   const RADIUS_MAX = 20;
   const PAD_V_END  = 30;
-  // Animation completes after scrolling ~75% of the hero height
-  const scrollEnd  = section.offsetTop * 0.75;
+  // Animation completes after scrolling ~55% of the hero height
+  const scrollEnd  = section.offsetTop * 0.55;
 
-  function easeOut(t) {
-    return 1 - Math.pow(1 - t, 3);
+  // easeOutBack: overshoots slightly then settles — gives the bounce feel
+  function easeOutBack(t) {
+    const s = 1.15;
+    return 1 + (s + 1) * Math.pow(t - 1, 3) + s * Math.pow(t - 1, 2);
   }
 
   function update() {
@@ -58,14 +60,24 @@
     }
     const vw = window.innerWidth;
     const padStart = Math.max(40, (vw - 1160) / 2);
-    const p   = easeOut(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
-    const pad = padStart * (1 - p);
+    const p   = easeOutBack(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
+    const pC  = Math.max(0, Math.min(1, p));
+    const pad = padStart * (1 - pC);
 
     section.style.paddingLeft  = pad + 'px';
     section.style.paddingRight = pad + 'px';
-    card.style.borderRadius    = `${RADIUS_MAX * (1 - p)}px`;
-    card.style.marginLeft = card.style.marginRight = '';
+    card.style.borderRadius    = `${RADIUS_MAX * (1 - pC)}px`;
     if (dcBody) dcBody.style.paddingLeft = (72 + (padStart - pad)) + 'px';
+
+    // Overshoot visible via negative margins when p > 1
+    const over = p - pC;
+    if (over > 0) {
+      const extra = over * padStart;
+      card.style.marginLeft  = `-${extra}px`;
+      card.style.marginRight = `-${extra}px`;
+    } else {
+      card.style.marginLeft = card.style.marginRight = '';
+    }
   }
 
   // Vertical growth: expands on first scroll down, collapses back at scrollY=0
