@@ -64,7 +64,8 @@
     section.style.paddingLeft  = pad + 'px';
     section.style.paddingRight = pad + 'px';
     card.style.borderRadius    = `${RADIUS_MAX * (1 - pC)}px`;
-    if (dcBody) dcBody.style.paddingLeft = (72 + (padStart - pad)) + 'px';
+    // 85% compensation: text drifts slightly left as card expands, stays there
+    if (dcBody) dcBody.style.paddingLeft = (72 + (padStart - pad) * 0.85) + 'px';
 
     const over = p - pC;
     if (over > 0) {
