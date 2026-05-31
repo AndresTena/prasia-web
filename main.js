@@ -42,7 +42,7 @@
 
   const RADIUS_MAX = 20;
   const PAD_V_END  = 30;
-  const scrollEnd   = section.offsetTop * 1.4;
+  const scrollEnd   = section.offsetTop * 1.15;
   const LERP        = 0.05;
 
   // Slow start, slight bounce near the end (like before)
