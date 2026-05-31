@@ -262,12 +262,23 @@ em  { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-
   align-items: start;
 }
 
-/* Entrada animada del hero */
-.hero-left  { animation: heroIn 0.9s var(--ease) both; }
-.hero-right { animation: heroIn 0.9s var(--ease) 0.14s both; }
-@keyframes heroIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: none; }
+/* ── HERO ENTRANCE ANIMATIONS ───────────────────────────── */
+@keyframes wordUp {
+  from { opacity: 0; transform: translateY(0.55em); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.word-reveal {
+  display: inline-block;
+  animation: wordUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--d, 0s);
+}
+.fade-reveal {
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--d, 0s);
 }
 
 .hero-heading {
@@ -325,7 +336,7 @@ em  { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-
 /* === DARK CARD — manifesto =================== */
 .dark-card-section {
   background: var(--cream);
-  /* horizontal padding starts at container-equivalent width; JS animates it to 0 */
+  /* JS overrides horizontal padding; vertical stays fixed */
   padding: 0 max(40px, calc((100vw - 1160px) / 2)) 80px;
 }
 
@@ -347,6 +358,7 @@ em  { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-
   justify-content: center;
   position: relative;
   z-index: 2;
+  transition: padding-left 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .dc-label {
@@ -523,7 +535,8 @@ em  { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-
 }
 .quiz-opt:hover { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.18); color:#fff; transform:translateX(3px); }
 .quiz-opt.selected { background:rgba(212,175,55,.12); border-color:rgba(212,175,55,.5); color:#fff; }
-.qo-icon { font-size:1.05rem; line-height:1; flex-shrink:0; }
+.qo-icon { width:20px; height:20px; flex-shrink:0; display:flex; align-items:center; opacity:.75; transition:opacity .18s; }
+.quiz-opt:hover .qo-icon, .quiz-opt.selected .qo-icon { opacity:1; }
 
 .qlead-hdr { margin-bottom:24px; }
 .qlead-hdr h3 { font-size:1.35rem; font-weight:700; color:#fff; letter-spacing:-.03em; margin-bottom:8px; }
