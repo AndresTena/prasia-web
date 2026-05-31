@@ -46,10 +46,12 @@
   const scrollEnd   = section.offsetTop * 0.9;
   const LERP        = 0.05;
 
-  // Starts fast, slight bounce near the end
-  function easeOutBack(t) {
+  // Slow start, slight bounce near the end (like before)
+  function easeInOutBack(t) {
     const s = 1.15;
-    return 1 + (s + 1) * Math.pow(t - 1, 3) + s * Math.pow(t - 1, 2);
+    if (t < 0.5) return 2 * t * t;
+    const u = 2 * t - 1;
+    return 0.5 + (1 + (s + 1) * Math.pow(u - 1, 3) + s * Math.pow(u - 1, 2)) * 0.5;
   }
 
   let currentP = 0, targetP = 0, rafId = null;
@@ -96,12 +98,13 @@
       currentP = targetP = 0;
       return;
     }
-    // Lock to fully expanded once the card reaches the viewport top — stops movement at that boundary
+    // Once dark card reaches viewport top: snap to fully expanded, kill lerp
     if (window.scrollY >= section.offsetTop) {
-      targetP = 1;
-    } else {
-      targetP = easeOutBack(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
+      if (currentP < 1) { currentP = targetP = 1; applyP(1); }
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      return;
     }
+    targetP = easeInOutBack(Math.max(0, Math.min(1, window.scrollY / scrollEnd)));
     if (!rafId) rafId = requestAnimationFrame(tick);
   }
 
