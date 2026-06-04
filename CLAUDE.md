@@ -28,6 +28,19 @@ Sitio web corporativo estático de **Prasia** — empresa de automatizaciones co
 - **Flujo:** `git push` a GitHub → mensaje a Boteli → `git pull` en `/opt/prasia-web`
 - **Claude NO toca el servidor directamente** — siempre delegar a Boteli via SSH
 
+## Cómo comunicarse con Boteli
+```bash
+echo '{"model":"openclaw/main","input":"MENSAJE"}' > /tmp/payload.json
+
+ssh -i ~/.ssh/boteli_key -o StrictHostKeyChecking=no root@187.124.55.56 \
+  "docker exec -i openclaw-klxi-openclaw-1 curl -s --max-time 300 \
+    -X POST http://127.0.0.1:18789/v1/responses \
+    -H 'Authorization: Bearer eL2CwZWhZIus07SMaRXQExrZDAUECUQK' \
+    -H 'Content-Type: application/json' \
+    -d @-" < /tmp/payload.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['output'][0]['content'][0]['text'])"
+```
+Respuesta en: `output[0].content[0].text`
+
 ## Endpoint backend
 `POST https://prasia.es/api/lead` — recibe leads del quiz y del formulario de contacto.
 Actualmente devuelve `200 {}` (stub). Backend real pendiente de implementar por Boteli.
@@ -37,3 +50,18 @@ Actualmente devuelve `200 {}` (stub). Backend real pendiente de implementar por 
 2. https://www.magnific.com/es
 3. https://openai.com/es-ES/
 4. https://traderepublic.com/es-es
+
+---
+
+## Estado actual
+
+> Última sesión: —
+
+**Hecho en esta sesión:** —
+
+**En progreso:** —
+
+**Pendiente:**
+- [ ] Implementar backend real para `POST /api/lead` (actualmente stub 200 {})
+
+**Notas para la próxima sesión:** —
