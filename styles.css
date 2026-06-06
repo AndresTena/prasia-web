@@ -406,17 +406,24 @@ em  { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-
 }
 .dc-cta:hover { gap: 10px; border-color: var(--gold); }
 
-/* Dot grid pattern — lado derecho del dark card */
+/* Dot grid pattern — lado derecho del dark card (pintado por canvas) */
 .dc-pattern {
   flex: 0 0 42%;
   position: relative;
-  background-image: radial-gradient(circle, rgba(212,175,55,.32) 1.5px, transparent 1.5px);
-  background-size: 30px 30px;
+}
+.dc-dots {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
 }
 .dc-pattern::after {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 2;
   /* gradiente que fusiona el patrón con el fondo oscuro por la izquierda */
   background: linear-gradient(to right, var(--dark) 0%, transparent 50%);
 }
@@ -634,7 +641,7 @@ em  { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-
 .cases-section { background: var(--cream); padding: 100px 0; border-top: 1px solid var(--border); }
 .cases-head { margin-bottom: 52px; }
 
-.cases-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.cases-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
 
 .case-card {
   background: var(--cream-3);
@@ -655,6 +662,7 @@ em  { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-
 .cv-1 { background: linear-gradient(135deg, #1A1916 0%, #2A2310 100%); }
 .cv-2 { background: linear-gradient(135deg, #252420 0%, #1A1916 100%); }
 .cv-3 { background: var(--cream-2); }
+.cv-4 { background: linear-gradient(135deg, #1A1916 0%, #594818 100%); }
 
 /* Texto oscuro para la card de fondo crema */
 .cv-3 .cv-name { color: rgba(26,25,22,.45); }

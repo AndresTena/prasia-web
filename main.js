@@ -425,3 +425,147 @@
     success.classList.remove('hidden');
   });
 })();
+
+
+// ── 7. DARK CARD DOTS — constelación: puntos flotantes unidos por líneas ──
+(function initDarkCardDots() {
+  const canvas = document.getElementById('dcDots');
+  if (!canvas) return;
+  const host = canvas.parentElement;          // .dc-pattern
+  const ctx  = canvas.getContext('2d');
+
+  const R_DOT     = 1.5;                       // radio del punto
+  const COLOR     = '212,175,55';             // gold (rgb)
+  const DOT_A     = 0.42;                       // opacidad del punto
+  const LINK_DIST = 120;                        // distancia máx. para unir dos puntos
+  const LINK_A    = 0.5;                        // opacidad máx. de la línea (en cercanía)
+  const SPEED     = 0.16;                       // velocidad de deriva (px/frame @60fps)
+  const AREA_PER  = 7200;                       // área de panel por partícula (densidad)
+  const MOUSE_R   = 150;                        // radio de conexión con el cursor
+  const reduce    = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let pts = [], dpr = 1, w = 0, h = 0;
+  const mouse = { x: -9999, y: -9999, active: false };
+
+  function spawn() {
+    return {
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 2 * SPEED,
+      vy: (Math.random() - 0.5) * 2 * SPEED,
+    };
+  }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = host.getBoundingClientRect();
+    w = rect.width; h = rect.height;
+    if (!w || !h) return;
+    canvas.width  = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // densidad proporcional al área: añade/quita partículas conservando las que ya
+    // existen (sin parpadeo) cuando la carta crece en el scroll-expand
+    const target = Math.max(12, Math.min(90, Math.round((w * h) / AREA_PER)));
+    while (pts.length < target) pts.push(spawn());
+    if (pts.length > target) pts.length = target;
+    // recoloca dentro de los nuevos límites a las que quedaron fuera
+    for (const p of pts) {
+      if (p.x > w) p.x = Math.random() * w;
+      if (p.y > h) p.y = Math.random() * h;
+    }
+  }
+
+  function step() {
+    for (const p of pts) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x <= 0 || p.x >= w) { p.vx *= -1; p.x = Math.max(0, Math.min(w, p.x)); }
+      if (p.y <= 0 || p.y >= h) { p.vy *= -1; p.y = Math.max(0, Math.min(h, p.y)); }
+    }
+  }
+
+  function paint() {
+    ctx.clearRect(0, 0, w, h);
+
+    // líneas entre puntos cercanos (opacidad por cercanía)
+    ctx.lineWidth = 1;
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[i];
+      for (let j = i + 1; j < pts.length; j++) {
+        const b = pts[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < LINK_DIST) {
+          ctx.strokeStyle = `rgba(${COLOR},${(1 - dist / LINK_DIST) * LINK_A})`;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+      // conexión sutil con el cursor
+      if (mouse.active) {
+        const dx = a.x - mouse.x, dy = a.y - mouse.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < MOUSE_R) {
+          ctx.strokeStyle = `rgba(${COLOR},${(1 - dist / MOUSE_R) * 0.55})`;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // puntos
+    ctx.fillStyle = `rgba(${COLOR},${DOT_A})`;
+    for (const p of pts) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, R_DOT, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  let rafId = null, running = false;
+  function loop() {
+    step();
+    paint();
+    rafId = requestAnimationFrame(loop);
+  }
+  function start() { if (!running && !reduce) { running = true; rafId = requestAnimationFrame(loop); } }
+  function stop()  { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } running = false; }
+
+  host.addEventListener('pointermove', e => {
+    const rect = host.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+    mouse.active = true;
+  });
+  host.addEventListener('pointerleave', () => { mouse.active = false; });
+
+  // pausa el rAF cuando la carta no es visible (ahorro de batería)
+  const io = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) start();
+    else stop();
+  }, { threshold: 0 });
+  io.observe(host);
+
+  // la dark card cambia de ancho en el scroll-expand sin disparar 'resize':
+  // ResizeObserver mantiene canvas y densidad alineados con el panel real
+  let lastW = 0, lastH = 0;
+  const ro = new ResizeObserver(() => {
+    const rect = host.getBoundingClientRect();
+    if (Math.abs(rect.width - lastW) < 0.5 && Math.abs(rect.height - lastH) < 0.5) return;
+    lastW = rect.width; lastH = rect.height;
+    resize();
+    // repinta YA: el RO corre tras el paint del rAF y canvas.width dejó el bitmap en
+    // blanco; sin esto los puntos desaparecen mientras la carta crece/decrece
+    paint();
+  });
+  ro.observe(host);
+
+  resize();
+  if (reduce) paint();       // estático pero visible (puntos + líneas)
+  else start();
+})();

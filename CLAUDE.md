@@ -23,9 +23,9 @@ Sitio web corporativo estático de **Prasia** — empresa de automatizaciones co
 - Tipografías: Space Grotesk (UI) + Instrument Serif italic (contraste editorial en `<em>`)
 
 ## Deploy
-- **Frontend:** estático servido por Nginx en el VPS vía Traefik
-- **Backend/deploy:** lo gestiona **Boteli** (agente IA en VPS 187.124.55.56)
-- **Flujo:** `git push` a GitHub → mensaje a Boteli → `git pull` en `/opt/prasia-web`
+- **URL:** prasia.es (+ www) · **Rama:** `master` · **Ruta VPS:** `/opt/prasia-web`
+- **Cómo se sirve:** contenedor `prasia-web` (`nginx:alpine`) que monta `/opt/prasia-web` como volumen **`:ro`** (puerto 8081→80, detrás de Traefik). Por eso **basta `git pull`, sin build**.
+- **Flujo (orden uniforme):** `git push origin master` → `/deploy` → Boteli, EN EL HOST: `cd /opt/prasia-web && git pull && bash deploy.sh`
 - **Claude NO toca el servidor directamente** — siempre delegar a Boteli via SSH
 
 ## Cómo comunicarse con Boteli
