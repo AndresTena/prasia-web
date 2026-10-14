@@ -35,9 +35,10 @@ echo '{"model":"openclaw/main","input":"MENSAJE"}' > /tmp/payload.json
 ssh -i ~/.ssh/boteli_key -o StrictHostKeyChecking=no root@187.124.55.56 \
   "docker exec -i openclaw-klxi-openclaw-1 curl -s --max-time 300 \
     -X POST http://127.0.0.1:18789/v1/responses \
-    -H 'Authorization: Bearer eL2CwZWhZIus07SMaRXQExrZDAUECUQK' \
+    -H 'Authorization: Bearer $BOTELI_TOKEN' \
     -H 'Content-Type: application/json' \
-    -d @-" < /tmp/payload.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['output'][0]['content'][0]['text'])"
+    -d @-" < /tmp/payload.json \
+  | node -e "let s='';process.stdin.on('data',c=>s+=c);process.stdin.on('end',()=>console.log(JSON.parse(s).output[0].content[0].text))"
 ```
 Respuesta en: `output[0].content[0].text`
 
@@ -55,13 +56,19 @@ Actualmente devuelve `200 {}` (stub). Backend real pendiente de implementar por 
 
 ## Estado actual
 
-> Última sesión: —
+> Última sesión: 2026-06-06 ("ClienTrack en Casos reales + dark card animada")
 
-**Hecho en esta sesión:** —
+**Hecho en esta sesión:**
+- **4ª demo ClienTrack en `#casos`** (`index.html`): nueva `.case-card` con visual `cv-4` → `https://clientrack.tenastudio.tech`, delay `.45s`, tags Next.js/IA/Recharts/CSV/Excel. En `styles.css`: regla `.cv-4` (gradiente dark→gold `#594818`) y `.cases-grid` pasada de 3 a **4 columnas** (los breakpoints ≤900px→2col y ≤768px→1col ya degradan bien).
+- **Dark card: puntitos dorados ahora animados** (`main.js`, módulo `initDarkCardDots`). Se sustituyó el patrón CSS estático (`radial-gradient` en `.dc-pattern`) por un `<canvas id="dcDots">`. Efecto final = **constelación**: partículas que flotan y rebotan en el panel derecho, unidas por líneas doradas por cercanía (<120px), + conexión sutil al cursor (<150px). Densidad ∝ área (12–90 puntos).
+- **Deploy a producción** (commit `7ee38a6`, fast-forward en VPS). Verificado: prasia.es HTTP 200, ClienTrack y `<canvas id="dcDots">` presentes en el HTML servido.
 
 **En progreso:** —
 
 **Pendiente:**
 - [ ] Implementar backend real para `POST /api/lead` (actualmente stub 200 {})
 
-**Notas para la próxima sesión:** —
+**Notas para la próxima sesión:**
+- **El efecto de la dark card cambió de idea 2 veces:** primero "repeler el cursor" (rejilla), luego se rehízo a **constelación** (puntos+líneas) cubriendo **solo el panel derecho** (`.dc-pattern`), no toda la carta — para no ensuciar el texto de la izquierda. Si se retoca, mantener esa decisión.
+- **Bug resuelto clave (no romper):** los puntos desaparecían al crecer/decrecer la carta porque el `ResizeObserver` corre *después* del `paint()` del rAF en el mismo frame, y `canvas.width = …` limpia el bitmap. Fix = repintar **siempre** dentro del callback del RO (no solo si está pausado). El `scroll-expand` ensancha `.dc-pattern` sin disparar `resize`, por eso se usa `ResizeObserver`, no el evento `resize`.
+- El módulo respeta `prefers-reduced-motion` (estado estático) y pausa el rAF fuera de vista (`IntersectionObserver`).
