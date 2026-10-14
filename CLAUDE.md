@@ -25,22 +25,12 @@ Sitio web corporativo estático de **Prasia** — empresa de automatizaciones co
 ## Deploy
 - **URL:** prasia.es (+ www) · **Rama:** `master` · **Ruta VPS:** `/opt/prasia-web`
 - **Cómo se sirve:** contenedor `prasia-web` (`nginx:alpine`) que monta `/opt/prasia-web` como volumen **`:ro`** (puerto 8081→80, detrás de Traefik). Por eso **basta `git pull`, sin build**.
-- **Flujo (orden uniforme):** `git push origin master` → `/deploy` → Boteli, EN EL HOST: `cd /opt/prasia-web && git pull && bash deploy.sh`
+- **Flujo (orden uniforme):** `git push origin master` → `/deploy` → Boteli, EN EL HOST, usa vps: `vps 'cd /opt/prasia-web && git pull && bash deploy.sh'`
 - **Claude NO toca el servidor directamente** — siempre delegar a Boteli via SSH
+- **El repo es público y `/opt/prasia-web` entero es el docroot.** `nginx.conf` (versionado, igual que `docker-compose.yml`) devuelve 404 a dotfiles (`.git`, `.claude`…) y a `*.md`, `*.sh`, `*.yml`/`*.yaml` y `*.conf`. **Nunca pongas tokens ni secretos en ningún archivo de este repo** (CLAUDE.md incluido): el token del gateway de Boteli se filtró por aquí y se rotó el 2026-10-14.
 
 ## Cómo comunicarse con Boteli
-```bash
-echo '{"model":"openclaw/main","input":"MENSAJE"}' > /tmp/payload.json
-
-ssh -i ~/.ssh/boteli_key -o StrictHostKeyChecking=no root@187.124.55.56 \
-  "docker exec -i openclaw-klxi-openclaw-1 curl -s --max-time 300 \
-    -X POST http://127.0.0.1:18789/v1/responses \
-    -H 'Authorization: Bearer $BOTELI_TOKEN' \
-    -H 'Content-Type: application/json' \
-    -d @-" < /tmp/payload.json \
-  | node -e "let s='';process.stdin.on('data',c=>s+=c);process.stdin.on('end',()=>console.log(JSON.parse(s).output[0].content[0].text))"
-```
-Respuesta en: `output[0].content[0].text`
+Canal canónico (ssh+curl), agentes y reglas: `~/.claude/rules/boteli-vps.md` (se carga solo en cada sesión; no lo dupliques aquí). Atajo desde dev: `node ~/.claude/tools/boteli.mjs "mensaje" [agente]` (también `@archivo.txt` o `-` por stdin). El token sale solo de la variable de entorno `BOTELI_TOKEN`, nunca de archivos. Para tareas en el host pídele siempre que use `vps` (sin eso ejecuta en su contenedor, que no tiene `/opt`).
 
 ## Endpoint backend
 `POST https://prasia.es/api/lead` — recibe leads del quiz y del formulario de contacto.
