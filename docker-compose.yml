@@ -1,0 +1,10 @@
+services:
+  prasia-web:
+    image: nginx:alpine
+    container_name: prasia-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
+    volumes:
+      - /opt/prasia-web:/usr/share/nginx/html:ro
+      - /opt/prasia-web/nginx.conf:/etc/nginx/conf.d/default.conf:ro
